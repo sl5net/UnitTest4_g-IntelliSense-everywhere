@@ -2,9 +2,10 @@ import java.awt.*
 import java.awt.event.KeyEvent
 import java.io.File
 import java.io.IOException
-import java.lang.System.out
+import java.nio.charset.MalformedInputException
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
+
 class Keyboard {
 
     private var robot: Robot? = null
@@ -172,18 +173,36 @@ class Keyboard {
         }
 
     }
-    ;
 
 
     companion object {
 
+        private val ahkDir = ".\\src\\"
+        private val ahkNameWithoutExtension = "exec-ahk-commandLineParas"
+        private val ahkName = "${ahkNameWithoutExtension}.ahk"
+        private val inputFileName = "${ahkName}.input.inc.ahk"
+        private val inputFile = File("${ahkDir}${inputFileName}")
+        private val outputFileName = "${ahkName}.output.txt"
+        private val outputFile = File("$ahkDir$outputFileName")
+
+
         @Throws(Exception::class)
         @JvmStatic
         fun main(args: Array<String>) {
+
+            this.openNotepad()
+            var returnString = this.getWait_OutputFile_String()
+            if(returnString != "true") {
+                println(":( problem: returnString = " + returnString)
+            }
+            return
+
             var ahkCode = """
             MsgBox,% "hi :) ${LocalDateTime.now()}(" A_LineNumber " " RegExReplace(A_LineFile,".*\\") ")"
-                """ var outputFile = doAhk(ahkCode)
-            outputFile?.forEachLine { println(it) }
+                """
+
+            doAhk(ahkCode)
+//            outputFile?.forEachLine { println(it) }
 
             if (false) {
                 val keyboard = Keyboard()
@@ -191,42 +210,36 @@ class Keyboard {
             }
         }
 
-        fun doAhk(ahkCode: String): File? {
-//            val ahkDir = "E:\\fre\\private\\HtmlDevelop\\AutoHotKey\\"
-            val ahkDir = ".\\src\\"
-            val ahkNameWithoutExtension = "exec-ahk-commandLineParas"
-            val ahkName = "${ahkNameWithoutExtension}.ahk"
-            val inputFileName = "${ahkName}.input.inc.ahk"
-            val outputFileName = "${ahkName}.output.txt"
-            val inputFile = File("$ahkDir$inputFileName")
-            if (inputFile.exists())
-                inputFile.delete()
-            Thread.sleep(100)
-            val outputFile = File("$ahkDir$outputFileName")
-            inputFile.writeText(ahkCode)
+        fun openNotepad() {
+            var ahkCode = """
+                SetTitleMatchMode,2
+                WinClose,ahk_class Notepad
+                WinWaitClose,,ahk_class Notepad,,1
+                run,notepad
+                WinWaitActive,ahk_class Notepad,,1
+                returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
+                FileAppend, % returnString, ${outputFile.absolutePath}
+                ExitApp
+            """.trimIndent()
+            doAhk(ahkCode)
+        }
+
+        fun getWait_OutputFile_String(): String {
+            var fileExists = outputFile.waitFileExist()
+            var outputFileContent = outputFile?.readText()
+            return outputFileContent
+        }
+
+        private fun File.waitFileExist(): Boolean {
             var i = 0
-            while (!inputFile.exists() && i++ < 100)
-                Thread.sleep(20)
-            if (outputFile.exists())
-                outputFile.delete()
-            val commandLine = "${ahkDir}${ahkName} ${inputFile.absolutePath} ${outputFile.absolutePath}"
-            val p = Runtime.getRuntime().exec("cmd /c " + commandLine)
-            println(p.toString())
-
-
-            i = 0
-            while (!outputFile.exists() && i++ < 100)
-                Thread.sleep(20)
-            var fileExists = outputFile.exists()
-
-            if (!fileExists) {
-                println("${outputFile.absolutePath} does not exist.")
-            } else {
-                println("${outputFile.absolutePath} does exist.")
-                //                Thread.sleep(100)
-//                outputFile.forEachLine { println(it) }
-            }
-            return outputFile
+            var sleepMili = 40
+            while (!this.exists() && (++i * sleepMili) < 3000) Thread.sleep(sleepMili.toLong())
+            var fileExists = this.exists()
+            if (!fileExists)
+                println(":-( ${this.absolutePath} does NOT exist.")
+            else
+                println(":-) ${this.absolutePath} does exist.")
+            return fileExists
         }
 
         //            keyboard.type("~!@#$%^&*()_+")
@@ -236,8 +249,19 @@ class Keyboard {
             Thread.sleep(1_000)  // wait for 1 second
             keyboard.type("1")
         }
-    }
 
+        fun doAhk(ahkCode: String) {
+            if (inputFile.exists())
+                inputFile.delete()
+            inputFile.writeText(ahkCode)
+            inputFile.waitFileExist()
+            if (outputFile.exists())
+                outputFile.delete()
+            val commandLine = "${ahkDir}${ahkName} ${inputFile.absolutePath} ${outputFile.absolutePath}"
+            val p = Runtime.getRuntime().exec("cmd /c " + commandLine)
+            println(p.toString())
+        }
+    }
 }
 
 

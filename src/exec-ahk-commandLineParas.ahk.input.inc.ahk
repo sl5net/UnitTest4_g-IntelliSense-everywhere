@@ -1,3 +1,8 @@
-
-            MsgBox,% "hi :) 2018-10-12T03:52:47.208401500(" A_LineNumber " " RegExReplace(A_LineFile,".*\\") ")"
-                
+SetTitleMatchMode,2
+WinClose,ahk_class Notepad
+WinWaitClose,,ahk_class Notepad,,1
+run,notepad
+WinWaitActive,ahk_class Notepad,,1
+returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
+FileAppend, % returnString, G:\fre\git\github\UnitTest4_g-IntelliSense-everywhere\.\src\exec-ahk-commandLineParas.ahk.output.txt
+ExitApp
