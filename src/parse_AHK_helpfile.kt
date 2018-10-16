@@ -25,10 +25,28 @@ fun infoWindowsOS_File(sFileStr: String) {
 //        ; println(i + ":" + it) }
     println("\\_______")
 }
+
 fun main(args: Array<String>) {
-//    doSomeTests()
-    File("""G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\""").walk().forEach { println(it) }
+    doSomeTests()
+    val s = """G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\"""
+    listAllFiles(s)
+    println("\\_______/¯¯¯¯¯¯¯".repeat(6))
+    listFirstFiles(s,3)
 }
+
+private fun listFirstFiles(s: String, i: Int) {
+    val listAllFiles = File(s).listFiles()
+    for ((index, path) in listAllFiles.withIndex())
+        if (index < i) println("""$index: $path""")
+}
+
+private fun listAllFiles(s: String) {
+    File(s).walk().forEach(::println)
+}
+
+
+
+
 
 private fun doSomeTests() {
     infoWindowsOS_File("""C:\""")
