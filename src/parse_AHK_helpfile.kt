@@ -1,20 +1,56 @@
 import java.io.File
 
+fun info(sFileStr: String) {
+    val file = File(sFileStr)
+    print("/¯¯¯¯¯¯¯ ")
+    print("isDir = " + file.isDirectory() + ", ")
+    println(" " + sFileStr)
+
+//    val fileList: ArrayList<File> = ArrayList()
+    val listAllFiles = file.listFiles()
+
+    if (false && listAllFiles != null && listAllFiles.size > 0) {
+        for (currentFile in listAllFiles) {
+            if (currentFile.name.endsWith(".ini")) {
+                // File absolute path
+//                println( currentFile.getAbsolutePath())
+                // File Name
+                println( currentFile.getName())
+//                fileList.add(currentFile.absoluteFile)
+            }
+        }
+    }
+
+//    file.walkTopDown().forEach { i++
+//        ; println(i + ":" + it) }
+    println("\\_______")
+}
 fun main(args: Array<String>) {
-    var rawPathStr = """"G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\"""
-    println("rawPathStr= " + rawPathStr)
-    var sWithoutDocs = """"G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\"""
+    info("""C:""")
+    info("""C:\Windows""")
+    info(""""G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\""")
+    info(""""G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\""")
+    info(""""G:\downloads""")
+    info(""""g:\downloads""")
+    info(""""g:""")
+
+/*    var sRaw = """"G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\"""
+    var sRaw = """"G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\"""
+    println("rawPathStr= " + sRaw)
+
+    var preparedPathWithoutDocFolderStr_1 = """"G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\"""
             .replace("\\", "\\\\")
-    println("sWithoutDocs=" + sWithoutDocs)
-    var s2 = rawPathStr.replace("\\", "\\\\")
-    println("s2= " + s2)
+    println("preparedPathStr =" + preparedPathStr)
+
+    var preparedWithoutDocFolderStr = rawPathStr.replace("\\", "\\\\")
+    println("s2= " + sWithoutDocs)
 //    val replace = s.replace("\\", File.separator)
 
     val rawPathStrFolder1 = File(rawPathStr)
-    val folder2 = File(s2)
+    val folder2 = File(sWithoutDocs)
 //¯¯¯¯ not working: s is dir? false
-    println("s is dir? " + rawPathStrFolder1.isDirectory())
-    println("s2 is dir? " + folder2.isDirectory())
+    println("rawPathStrFolder1 is dir? " + rawPathStrFolder1.isDirectory())
+    println("folder2 is dir? " + folder2.isDirectory())
 //    s is dir? false
 //    s2 is dir? false
 //\____ not working: s is dir? false
@@ -43,6 +79,7 @@ fun main(args: Array<String>) {
 //    File(replace).walkTopDown().forEach { println(it) }
 //    ;File(replace).walkTopDown().forEach { -> println(it) }
 // .replace('/', File.separatorChar);
+*/
 }
 
 //private fun String.replace(c: Char, s: String): Any {
