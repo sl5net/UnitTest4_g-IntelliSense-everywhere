@@ -6,6 +6,25 @@ import java.nio.charset.MalformedInputException
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 
+
+/*
+Examples in doku:
+
+<tr id="Floor">
+<td><a href="commands/Math.html#Floor">Floor</a></td>
+<td>Returns <em>Number</em> rounded down to the nearest integer (without any .00 suffix).</td>
+</tr>
+
+
+<h1>WinGetTitle</h1>
+<p>Retrieves the title of the specified window.</p>
+
+
+
+ */
+
+
+
 class Keyboard {
 
     private var robot: Robot? = null
