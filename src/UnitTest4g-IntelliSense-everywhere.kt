@@ -3,7 +3,11 @@ import java.awt.event.KeyEvent
 import java.io.File
 import java.io.IOException
 import java.nio.charset.MalformedInputException
+import java.sql.Timestamp
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 
@@ -208,13 +212,28 @@ class Keyboard {
         @Throws(Exception::class)
         @JvmStatic
         fun main(args: Array<String>) {
-
-            this.openNotepad()
+//            openNotepad()
+            openNotepad_NeverUsedBefore_a_totally_new()
             var returnString = this.getWait_OutputFile_String()
-            if(returnString != "true") {
+            if (returnString != "true")
                 println(":( problem: returnString = " + returnString)
-            }
+            else
+                println(":) OK: returnString = " + returnString)
+
+            Thread.sleep(5500.toLong())
+            val keyboard = Keyboard()
+            createLibFristTimeAndOpen2textEditor(keyboard)
+
+            if (WinWaitActive("${this.timestamp}.ahk"))
+                println(":) Active = ${this.timestamp}.ahk")
+            else
+                println(":( NOT Active = ${this.timestamp}.ahk")
+//            keyboard.type("__")
+//            Thread.sleep(1_000)  // wait for 1 second
+//            keyboard.type("1")
+
             return
+
 
             var ahkCode = """
             MsgBox,% "hi :) ${LocalDateTime.now()}(" A_LineNumber " " RegExReplace(A_LineFile,".*\\") ")"
@@ -229,13 +248,83 @@ class Keyboard {
             }
         }
 
+
+        private var timestamp: String? = null
+
+        fun openNotepad_NeverUsedBefore_a_totally_new() {
+            openNotepad()
+
+//            var sleepMili = 100
+            Thread.sleep(1500.toLong())
+
+//            Speichern unter ahk_class #32770 ; mouseWindowTitle=0xd512a2  ;
+//            WinMove,Speichern unter ahk_class #32770 ,, 2788,365, 960,600
+            this.timestamp = DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd HH_mm_ss_SSSSSS")
+                    .withZone(ZoneOffset.UTC)
+                    .format(Instant.now())
+
+            var ahkCode = """
+                SetTitleMatchMode,2
+                WinWait,ahk_class Notepad,,1
+                WinActivate,ahk_class Notepad
+                WinWaitActive,ahk_class Notepad,,1
+                Send,^s
+                WinWaitActive, ahk_class #32770 ,,2
+                IfWinNotActive, ahk_class #32770
+                {
+                    returnString := "false"
+                    FileAppend, % returnString, ${outputFile.absolutePath}
+                    ExitApp
+                }
+                ClipboardBackup := "$timestamp"
+                Clipboard := "$timestamp"
+                Send,^v{enter}
+                WinWaitNotActive, ahk_class #32770 ,,1
+                ClipboardBackup := Clipboard
+                tooltip,% "WinWaitActive (" A_LineNumber " " RegExReplace(A_LineFile,".*\\") ")"
+                WinWaitActive,$timestamp ahk_class Notepad,,1
+                tooltip,
+                returnString := ( WinExist("$timestamp ahk_class Notepad") ) ? "true" : "false"
+                FileAppend, % returnString, ${outputFile.absolutePath}
+                ExitApp
+            """.trimIndent()
+            doAhk(ahkCode)
+            Thread.sleep(1500.toLong())
+
+        }
+
+        private fun WinWaitActive(s: String): Boolean {
+            var ahkCode = """
+                SetTitleMatchMode,2
+                WinWaitActive,$s,,2
+                IfWinActive,$s
+                    returnString := "true"
+                else
+                    returnString := "false"
+                FileAppend, % returnString, ${outputFile.absolutePath}
+                ExitApp
+            """.trimIndent()
+            doAhk(ahkCode)
+            var returnString = this.getWait_OutputFile_String()
+            return if (returnString == "true") true else false
+//            return (returnString == "true") ? true : false // <==== not working in kotlin
+        }
+
+
         fun openNotepad() {
             var ahkCode = """
                 SetTitleMatchMode,2
                 WinClose,ahk_class Notepad
-                WinWaitClose,,ahk_class Notepad,,1
+                WinKill,ahk_class Notepad
+                WinWaitClose,,ahk_class Notepad,,2
+                If(WinExist("ahk_class #32770")){
+                    returnString := "false"
+                    FileAppend, % returnString, ${outputFile.absolutePath}
+                    ExitApp
+                }
                 run,notepad
-                WinWaitActive,ahk_class Notepad,,1
+                WinWaitActive,ahk_class Notepad,,2
                 returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
                 FileAppend, % returnString, ${outputFile.absolutePath}
                 ExitApp
@@ -255,7 +344,7 @@ class Keyboard {
             while (!this.exists() && (++i * sleepMili) < 3000) Thread.sleep(sleepMili.toLong())
             var fileExists = this.exists()
             if (!fileExists)
-                println(":-( ${this.absolutePath} does NOT exist.")
+                println(":-( ${this.absolutePath} does NOT exist. weited: ${i * sleepMili}")
             else
                 println(":-) ${this.absolutePath} does exist.")
             return fileExists

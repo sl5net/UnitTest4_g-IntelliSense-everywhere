@@ -1,4 +1,5 @@
 import java.io.File
+import kotlin.system.exitProcess
 
 fun infoWindowsOS_File(sFileStr: String) {
     val file = File(sFileStr)
@@ -15,7 +16,7 @@ fun infoWindowsOS_File(sFileStr: String) {
                 // File absolute path
 //                println( currentFile.getAbsolutePath())
                 // File Name
-                println( currentFile.getName())
+                println(currentFile.getName())
 //                fileList.add(currentFile.absoluteFile)
             }
         }
@@ -28,12 +29,30 @@ fun infoWindowsOS_File(sFileStr: String) {
 
 fun main(args: Array<String>) {
     doSomeTests()
-    val s = """G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\"""
-    listAllFiles(s)
+    if (File.separatorChar != '\\') {
+        println("Problem: File.separator is not Windows Style: fix that.")
+        throw exitProcess(1)
+    }
+    return
+    val folderPath = """G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\"""
+//    listAllFiles(folderPath)
     println("\\_______/¯¯¯¯¯¯¯".repeat(6))
-    listFirstFiles(s,3)
+//    listFirstFiles(folderPath, 3)
+    parseFirstFiles(folderPath, 1)
+
 }
 
+private fun parseFirstFiles(s: String, i: Int) {
+    val listAllFiles = File(s).listFiles()
+    for ((index, path) in listAllFiles.withIndex())
+        if (index <= i) {
+//            println("""$index: $path""")
+            val file = File(path.absolutePath)
+            file.forEachLine { println(it) }
+        }
+}
+
+fun readFileLineByLineUsingForEachLine(fileName: String) = File(fileName).forEachLine { println(it) }
 private fun listFirstFiles(s: String, i: Int) {
     val listAllFiles = File(s).listFiles()
     for ((index, path) in listAllFiles.withIndex())
@@ -45,10 +64,8 @@ private fun listAllFiles(s: String) {
 }
 
 
-
-
-
 private fun doSomeTests() {
+    println(" File.separatorChar = " + File.separatorChar)
     infoWindowsOS_File("""C:\""")
     infoWindowsOS_File("""C:\Windows""")
     infoWindowsOS_File("""G:\My Web Sites\https___autohotkey.com_docs_AutoHotkey.htm\autohotkey.com\docs\""")
