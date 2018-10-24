@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/UnitTest4g-IntelliSense-everywhere.kt" line="238" mnemonic="4" />
+    <bookmark url="file://$PROJECT_DIR$/src/UnitTest4g-IntelliSense-everywhere.kt" line="241" mnemonic="4" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f49b94b2-c832-4666-a66c-ea2711235ea1" name="Default" comment="Problem the output file is not generated. The day before yesterday it was still produced. I have also tried the path directly on C. Still does not work.">
@@ -71,33 +71,33 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="ahk" value="5" />
+          <entry key="ahk" value="10" />
           <entry key="gitignore" value="2" />
-          <entry key="iml" value="2" />
+          <entry key="iml" value="3" />
           <entry key="java" value="5" />
-          <entry key="kt" value="5" />
-          <entry key="txt" value="1" />
+          <entry key="kt" value="6" />
+          <entry key="txt" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="IDEA_MODULE" value="2" />
+          <entry key="IDEA_MODULE" value="3" />
           <entry key="JAVA" value="5" />
-          <entry key="Kotlin" value="5" />
-          <entry key="PLAIN_TEXT" value="8" />
+          <entry key="Kotlin" value="6" />
+          <entry key="PLAIN_TEXT" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="ahk" value="19" />
-          <entry key="kt" value="3179" />
+          <entry key="ahk" value="23" />
+          <entry key="kt" value="3437" />
           <entry key="txt" value="98" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Kotlin" value="3179" />
-          <entry key="PLAIN_TEXT" value="117" />
+          <entry key="Kotlin" value="3437" />
+          <entry key="PLAIN_TEXT" value="121" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.spring.boot.run.usages" />
@@ -116,8 +116,26 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UnitTest4g-IntelliSense-everywhere.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="201" column="35" selection-start-line="201" selection-start-column="35" selection-end-line="201" selection-end-column="35" />
+            <state relative-caret-position="387">
+              <caret line="460" column="7" selection-start-line="460" selection-start-column="7" selection-end-line="460" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/fun_doAhk_last_temp.ahk">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/temp2.ahk">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="7" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -125,26 +143,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk-9.0.1/lib/src.zip!/java.base/java/io/FileOutputStream.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="277" lean-forward="true" selection-start-line="277" selection-end-line="277" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk.output.inc.ahk">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="8" lean-forward="true" selection-start-column="8" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/kotlin/io/FileReadWrite.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="100" selection-start-line="100" selection-end-line="100" />
+            <state relative-caret-position="153">
+              <caret line="276" column="5" selection-start-line="276" selection-start-column="5" selection-end-line="276" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -152,7 +152,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/parse_AHK_helpfile.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="255">
+              <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
@@ -174,20 +175,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/UnitTest4g-IntelliSense-everywhere.iml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
-              <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+              <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -195,10 +186,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk.input.inc.ahk">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+            <state relative-caret-position="66">
+              <caret line="40" column="7" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/UnitTest4g-IntelliSense-everywhere.iml">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -213,17 +209,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>file</find>
-      <find>notepad</find>
-      <find>exitV</find>
-      <find>key</find>
-      <find>keyboard</find>
-      <find>times</find>
-      <find>openNotepad_NeverUsedBefore_a_totally_new</find>
-      <find>Editor</find>
-      <find>2018</find>
-      <find>Send,^s</find>
-      <find>ahkCode</find>
       <find>openAndSave_Notepad_NeverUsedBefore_a_totally_new</find>
       <find>execp</find>
       <find>activ</find>
@@ -243,10 +228,26 @@
       <find>FileAppend,</find>
       <find>delete</find>
       <find>filea</find>
+      <find>${ahkDirRel}${</find>
+      <find>ahkDirAbsinputFileName</find>
+      <find>ahkDirAbsahkName</find>
+      <find>$ahkDirAbs$</find>
+      <find>$ahkDirAbs$\</find>
+      <find>$ahkDirAbs\$</find>
+      <find>commandLineParas.ahk</find>
+      <find>ahk-commandLineParas</find>
+      <find>ahkNameWithoutExtension</find>
+      <find>ahkName</find>
+      <find>temp2</find>
     </findStrings>
     <replaceStrings>
       <replace>VK_NUMPAD</replace>
       <replace>FileAppend, % returnString, % &quot;$</replace>
+      <replace>${ahkDirAbs}${ahkDirAbs</replace>
+      <replace>inputFileName</replace>
+      <replace>ahkName</replace>
+      <replace>$ahkDirAbs$\</replace>
+      <replace>$ahkDirAbs\$</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -260,6 +261,7 @@
         <option value="$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk" />
         <option value="$PROJECT_DIR$/src/parse_AHK_helpfile.kt" />
         <option value="$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk.input.inc.ahk" />
+        <option value="$PROJECT_DIR$/src/temp2.ahk" />
         <option value="$PROJECT_DIR$/src/UnitTest4g-IntelliSense-everywhere.kt" />
       </list>
     </option>
@@ -327,62 +329,6 @@
               <item name="UnitTest4_g-IntelliSense-everywhere" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; 9.0 &gt;" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; 9.0 &gt;" type="70bed36:NamedLibraryElementNode" />
-              <item name="java.base" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; 9.0 &gt;" type="70bed36:NamedLibraryElementNode" />
-              <item name="java.base" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; 9.0 &gt;" type="70bed36:NamedLibraryElementNode" />
-              <item name="java.base" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="io" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="KotlinJavaRuntime" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="KotlinJavaRuntime" type="70bed36:NamedLibraryElementNode" />
-              <item name="kotlin-stdlib.jar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="KotlinJavaRuntime" type="70bed36:NamedLibraryElementNode" />
-              <item name="kotlin-stdlib.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="UnitTest4_g-IntelliSense-everywhere" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="KotlinJavaRuntime" type="70bed36:NamedLibraryElementNode" />
-              <item name="kotlin-stdlib.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="io" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -395,7 +341,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540409625158" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540419828296" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="C:/Program Files/nodejs/node" />
@@ -515,7 +461,7 @@
       <workItem from="1539307937490" duration="1682000" />
       <workItem from="1539316225441" duration="34836000" />
       <workItem from="1540139914841" duration="3572000" />
-      <workItem from="1540394264726" duration="11745000" />
+      <workItem from="1540394264726" duration="19730000" />
     </task>
     <task id="LOCAL-00001" summary="works  :-) open notepad">
       <created>1539316983195</created>
@@ -573,26 +519,33 @@
       <option name="project" value="LOCAL" />
       <updated>1540404062336</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Problem the output file is not generated. The day before yesterday it was still produced. I have also tried the path directly on C. Still does not work.">
+      <created>1540409706137</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1540409706137</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83587000" />
+    <option name="totallyTimeSpent" value="91572000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="9" y="1" width="1507" height="744" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6958525" visible="true" weight="0.1929002" />
-      <window_info id="Structure" order="1" sideWeight="0.30414745" side_tool="true" visible="true" weight="0.1929002" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.8336887" visible="true" weight="0.28198257" />
+      <window_info id="Structure" order="1" sideWeight="0.1663113" side_tool="true" visible="true" weight="0.28198257" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Image Layers" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.17569546" />
-      <window_info active="true" anchor="bottom" x="-4433" y="240" width="5734" height="120" id="Run" order="2" visible="true" weight="0.36549708" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.1754386" />
+      <window_info anchor="bottom" x="-4433" y="240" width="5734" height="120" id="Run" order="2" visible="true" weight="0.31432748" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -678,21 +631,6 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/UnitTest4g-IntelliSense-everywhere.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/parse_AHK_helpfile.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk.output.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/kotlin/io/FileReadWrite.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="447">
@@ -713,17 +651,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk.input.inc.ahk">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        <state relative-caret-position="66">
+          <caret line="40" column="7" selection-start-line="40" selection-start-column="7" selection-end-line="40" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk">
+    <entry file="file://$PROJECT_DIR$/out/production/UnitTest4g-IntelliSense-everywhere/exec-ahk-commandLineParas.ahk.output.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+        <state>
+          <caret column="4" lean-forward="true" selection-start-column="4" selection-end-column="4" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/UnitTest4g-IntelliSense-everywhere/temp2.ahk">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk.output.inc.ahk">
       <provider selected="true" editor-type-id="text-editor">
@@ -734,15 +675,69 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk-9.0.1/lib/src.zip!/java.base/java/io/FileOutputStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="277" lean-forward="true" selection-start-line="277" selection-end-line="277" />
+        <state relative-caret-position="153">
+          <caret line="276" column="5" selection-start-line="276" selection-start-column="5" selection-end-line="276" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UnitTest4g-IntelliSense-everywhere.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcexec-ahk-commandLineParas.ahk.input.inc.ahk">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/temp2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srctemp3.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/parse_AHK_helpfile.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="1" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/exec-ahk-commandLineParas.ahk.output.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="5" selection-start-column="5" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/temp2.ahk">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="7" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fun_doAhk_last_temp.ahk">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/UnitTest4g-IntelliSense-everywhere.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="201" column="35" selection-start-line="201" selection-start-column="35" selection-end-line="201" selection-end-column="35" />
+        <state relative-caret-position="387">
+          <caret line="460" column="7" selection-start-line="460" selection-start-column="7" selection-end-line="460" selection-end-column="7" />
         </state>
       </provider>
     </entry>

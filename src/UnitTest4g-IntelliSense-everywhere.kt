@@ -1,3 +1,4 @@
+import sun.jvm.hotspot.ui.Editor
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.io.File
@@ -198,14 +199,17 @@ class Keyboard {
 
     companion object {
 
-        private val ahkDir = """src\"""
+        private val ahkDirRel = """src\"""
+        private val ahkDirAbs = File(ahkDirRel).absolutePath
         private val ahkNameWithoutExtension = "exec-ahk-commandLineParas"
         private val ahkName = "${ahkNameWithoutExtension}.ahk"
         private val inputFileName = "${ahkName}.input.inc.ahk"
-        private val inputFile = File("${ahkDir}${inputFileName}")
+        private val ahkFile = File("""${ahkDirAbs}\${ahkName}""")
+        private val inputFile = File("""${ahkDirAbs}\${inputFileName}""")
         private val outputFileName = "${ahkName}.output.txt"
-        private val outputFile = File("$ahkDir$outputFileName") // <== problem it will not generated 24.10.2018 19:54
-//        private val outputFile = File("""c:\$outputFileName""")
+//        private val outputFile = File("$ahkDirRel$outputFileName") // <== problem it will not generated 24.10.2018 19:54
+        private val outputFile = File("""$ahkDirAbs\$outputFileName""")
+//        private val outputFile = File("""c:$outputFileName""")
 
 
         @Throws(Exception::class)
@@ -387,34 +391,93 @@ class Keyboard {
         private fun isWritingToOutputFilePossible(): Boolean {
             var ahkCode = """
                 #SingleInstance,Force
-                FileAppend, % "true", % "${outputFile.absolutePath}"
+                outputFile := "${outputFile.absolutePath}"
+                FileAppend, % "true", % outputFile
+                ; FileAppend, % "true", % "${ahkDirAbs}temp3.txt"
+                 msg := A_LastError " = A_LastError`n"
+                 msg .= ErrorLevel " =ErrorLevel"
+                ; msgbox, % msg
                 ExitApp
             """.trimIndent()
-            val file = File("temp2.txt").writeText(ahkCode)
             doAhk(ahkCode)
             return isReturnStringTrue()
         }
         private fun closeAllOpenNotepad(): Boolean {
-            var ahkCode = """
+            var temp = """
                 #SingleInstance,Force
-                SetTitleMatchMode,2
-                while(winexist("ahk_class Notepad")){
-                    WinClose,ahk_class Notepad
-                    tooltip,WinWait (%A_LineFile%~%A_LineNumber%)
-                    ; Editor ahk_class #32770 ; mouseWindowTitle=0x44a2386  ;
-                    WinActivate,Editor ahk_class #32770
-                    tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
-                    WinWaitActive,Editor ahk_class #32770,,1 ; would you save
-                    Send,n ; no
-                    tooltip,WinWaitClose (%A_LineFile%~%A_LineNumber%)
-                    WinWaitClose,,ahk_class Notepad,,2
-                }
-                If(WinExist("ahk_class #32770")){
-                    returnString := "false"
-                    FileAppend, % returnString, % "${outputFile.absolutePath}"
-                    ExitApp
-                }
-                returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
+SetTitleMatchMode,2
+tooltip,WinWait (%A_LineFile%~%A_LineNumber%)
+WinWait,ahk_class Notepad , , 1 , Notepad++
+
+WinActivate,ahk_class Notepad , , Notepad++
+; Msgbox,(%A_LineFile%~%A_LineNumber%)
+tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
+WinWaitActive,ahk_class Notepad , , 1 , Notepad++
+; Msgbox,(%A_LineFile%~%A_LineNumber%)
+ControlSend, , hi ,ahk_class Notepad , , Notepad++
+sleep,1500
+
+; Msgbox,(%A_LineFile%~%A_LineNumber%)
+; ControlSend,,{CtrlDown}s{CtrlUp},ahk_class Notepad
+while(A_Index < 90){
+	tooltip, % A_Index
+	WinActivate,ahk_class Notepad , , Notepad++
+	ifWinActive,ahk_class Notepad , , Notepad++
+		send,^s
+	tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
+; Speichern unter ahk_class #32770
+	WinWaitActive,ahk_class #32770 ahk_exe notepad.exe,,2 , Notepad++
+	IfWinActive,ahk_class #32770 ahk_exe notepad.exe, , Notepad++
+	{
+		MsgBox,great
+		Break
+	}
+}
+sleep,1500
+WinActivate,ahk_class #32770 ahk_exe notepad.exe, , Notepad++
+IfWinActive,ahk_class #32770 ahk_exe notepad.exe, , Notepad++
+{
+	ClipboardBackup := "2018-10-24 21_36_03_798939"
+	Clipboard := "2018-10-24 21_36_03_798939"
+	sleep,2500
+	Send,^v{enter}
+	Send,%Clipboard%{enter}
+}
+IfWinNotActive,% Clipboard
+{
+	returnString := "false"
+	FileAppend, % returnString, % "G:\fre\git\github\UnitTest4_g-IntelliSense-everywhere\src\exec-ahk-commandLineParas.ahk.output.txt"
+	ExitApp
+}
+returnString := "true"
+FileAppend, % returnString, % "G:\fre\git\github\UnitTest4_g-IntelliSense-everywhere\src\exec-ahk-commandLineParas.ahk.output.txt"
+
+
+tooltip,WinWaitNotActive (%A_LineFile%~%A_LineNumber%)
+Clipboard := ClipboardBackup
+
+MsgBox
+
+ExitApp
+                """
+            var ahkCode = """
+#SingleInstance,Force
+SetTitleMatchMode,2
+while(winexist("ahk_class Notepad", "" , "Notepad++") && A_Index < 5 ){
+	WinActivate,
+	WinWaitActive, , , 1
+	WinClose,
+	tooltip,WinWait (%A_LineFile%~%A_LineNumber%)
+    ; Editor ahk_class #32770 ; mouseWindowTitle=0x44a2386  ;
+	WinActivate,ahk_class #32770,,Notepad++
+	tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
+	WinWaitActive,ahk_class #32770,,1 ; would you save
+	IfWinActive
+		Send,n ; no
+	tooltip,WinWaitClose (%A_LineFile%~%A_LineNumber%)
+	WinWaitClose,,ahk_class Notepad,,1
+}
+returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" : "true"
                 FileAppend, % returnString, % "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
@@ -472,9 +535,14 @@ class Keyboard {
             if (outputFile.exists())
                 outputFile.delete()
             Thread.sleep(100.toLong())
-            val commandLine = """"${ahkDir}${ahkName}" "${inputFile.absolutePath}" "${outputFile.absolutePath}""""
+//            val commandLine = """"${ahkDirAbs}${ahkName}" "${inputFile.absolutePath}" "${outputFile.absolutePath}""""
+            val commandLine = """${ahkFile.absolutePath} ${inputFile.absolutePath} ${outputFile.absolutePath}"""
+//            println()
+//            println(commandLine)
+//            println()
             val p = Runtime.getRuntime().exec("cmd /c " + commandLine)
             println(p.toString())
+            File("${ahkDirRel}fun_doAhk_last_temp.ahk").writeText(ahkCode) // <=== only for testing 24.10.2018 21:44
             Thread.sleep(100.toLong())
         }
     }
