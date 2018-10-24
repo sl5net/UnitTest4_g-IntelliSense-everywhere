@@ -1,4 +1,3 @@
-import sun.jvm.hotspot.ui.Editor
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.io.File
@@ -9,7 +8,6 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
-
 /*
 Examples in doku:
 
@@ -18,18 +16,11 @@ Examples in doku:
 <td>Returns <em>Number</em> rounded down to the nearest integer (without any .00 suffix).</td>
 </tr>
 
-
 <h1>WinGetTitle</h1>
 <p>Retrieves the title of the specified window.</p>
-
-
-
  */
 
-
-
 class Keyboard {
-
     private var robot: Robot? = null
 
     @Throws(AWTException::class)
@@ -251,7 +242,7 @@ class Keyboard {
         }
 
         private fun isReturnStringTrue(milliWaitMax: Int = 3000): Boolean {
-            var returnString = this.getWait_OutputFile_String(3000)
+            val returnString = this.getWait_OutputFile_String(milliWaitMax)
             if (returnString != "true")
                 println(":( problem: returnString = " + returnString)
             else
@@ -280,7 +271,7 @@ class Keyboard {
                     .format(Instant.now())
 
 
-            var ahkCode = """
+            val ahkCode = """
                 #SingleInstance,Force
                 SetTitleMatchMode,2
                 tooltip,WinWait (%A_LineFile%~%A_LineNumber%)
@@ -340,7 +331,7 @@ class Keyboard {
         private fun run_Gi_IntelliSenseEverywhere(): Boolean {
             val path: String = """E:\fre\private\HtmlDevelop\AutoHotKey\global-IntelliSense-everywhere-Nightly-Build\start.ahk"""
             val winTitle: String = """TypingAid.ahk"""
-            var ahkCode = """
+            val ahkCode = """
                 #SingleInstance,Force
                 run,"$path"
             """.trimIndent()
@@ -353,7 +344,7 @@ class Keyboard {
         }
 
         private fun WinWaitActive(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: String = "Off", secondsWait: Int = 2): Boolean {
-            var ahkCode = """
+            val ahkCode = """
                 #SingleInstance,Force
                 SetTitleMatchMode,2
                 DetectHiddenWindows,$detectHiddenWindowOnOff
@@ -373,7 +364,7 @@ class Keyboard {
 
 
         private fun openNotepad(): Boolean {
-            var ahkCode = """
+            val ahkCode = """
                 #SingleInstance,Force
                 SetTitleMatchMode,2
                 run,notepad
@@ -389,7 +380,7 @@ class Keyboard {
             return isReturnStringTrue()
         }
         private fun isWritingToOutputFilePossible(): Boolean {
-            var ahkCode = """
+            val ahkCode = """
                 #SingleInstance,Force
                 outputFile := "${outputFile.absolutePath}"
                 FileAppend, % "true", % outputFile
@@ -460,7 +451,7 @@ MsgBox
 
 ExitApp
                 """
-            var ahkCode = """
+            val ahkCode = """
 #SingleInstance,Force
 SetTitleMatchMode,2
 while(winexist("ahk_class Notepad", "" , "Notepad++") && A_Index < 5 ){
@@ -486,19 +477,19 @@ returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" 
         }
 
         fun getWait_OutputFile_String(milliWaitMax: Int = 3000): String {
-            var fileExists = outputFile.waitFileExist(3000)
+            val fileExists = outputFile.waitFileExist(3000)
             if (!fileExists)
                 throw Exception(":( ${outputFile.absolutePath} not exist.")
 
-            var outputFileContent = outputFile?.readText()
+            val outputFileContent = outputFile?.readText()
             return outputFileContent
         }
 
         private fun File.waitFileExist(milliWaitMax: Int = 3000): Boolean {
             var i = 0
-            var sleepMili = 40
+            val sleepMili = 40
             while (!this.exists() && (++i * sleepMili) < milliWaitMax) Thread.sleep(sleepMili.toLong())
-            var fileExists = this.exists()
+            val fileExists = this.exists()
             if (!fileExists)
                 println(":-( ${this.absolutePath} does NOT exist. weited: ${i * sleepMili}")
             else

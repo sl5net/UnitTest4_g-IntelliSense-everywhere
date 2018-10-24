@@ -24,8 +24,8 @@ IfWinNotActive, ahk_class #32770
     FileAppend, % returnString, % "G:\fre\git\github\UnitTest4_g-IntelliSense-everywhere\src\exec-ahk-commandLineParas.ahk.output.txt"
     ExitApp
 }
-ClipboardBackup := "2018-10-24 21_36_03_798939"
-Clipboard := "2018-10-24 21_36_03_798939"
+ClipboardBackup := "2018-10-24 22_40_58_881102"
+Clipboard := "2018-10-24 22_40_58_881102"
 sleep,200
 Send,^v{enter}
 tooltip,WinWaitNotActive (%A_LineFile%~%A_LineNumber%)
@@ -34,8 +34,8 @@ WinWaitNotActive, ahk_class #32770 ,,1
 ClipboardBackup := Clipboard
 
 tooltip,% "WinWaitActive (" A_LineNumber " " RegExReplace(A_LineFile,".*\\") ")"
-WinWaitActive,2018-10-24 21_36_03_798939 ahk_class Notepad,,1
+WinWaitActive,2018-10-24 22_40_58_881102 ahk_class Notepad,,1
 tooltip,
-returnString := ( WinExist("2018-10-24 21_36_03_798939 ahk_class Notepad") ) ? "true" : "false"
+returnString := ( WinExist("2018-10-24 22_40_58_881102 ahk_class Notepad") ) ? "true" : "false"
 FileAppend, % returnString, % "G:\fre\git\github\UnitTest4_g-IntelliSense-everywhere\src\exec-ahk-commandLineParas.ahk.output.txt"
 ExitApp
