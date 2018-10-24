@@ -2,8 +2,6 @@ import java.awt.*
 import java.awt.event.KeyEvent
 import java.io.File
 import java.io.IOException
-import java.nio.charset.MalformedInputException
-import java.sql.Timestamp
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -206,28 +204,28 @@ class Keyboard {
         private val inputFileName = "${ahkName}.input.inc.ahk"
         private val inputFile = File("${ahkDir}${inputFileName}")
         private val outputFileName = "${ahkName}.output.txt"
-        private val outputFile = File("$ahkDir$outputFileName")
+        private val outputFile = File("$ahkDir$outputFileName") // <== problem it will not generated 24.10.2018 19:54
+//        private val outputFile = File("""c:\$outputFileName""")
 
 
         @Throws(Exception::class)
         @JvmStatic
         fun main(args: Array<String>) {
+            if (!isWritingToOutputFilePossible()) {
+                throw Exception(":( isWritingToOutputFilePossible failed")
+            }
 //            openNotepad()
-            openNotepad_NeverUsedBefore_a_totally_new()
-            var returnString = this.getWait_OutputFile_String()
-            if (returnString != "true")
-                println(":( problem: returnString = " + returnString)
-            else
-                println(":) OK: returnString = " + returnString)
+            if (!openAndSave_Notepad_NeverUsedBefore_a_totally_new())
+                throw Exception(":( openAndSave_Notepad_NeverUsedBefore_a_totally_new failed")
 
             Thread.sleep(5500.toLong())
+
+            if (!run_Gi_IntelliSenseEverywhere())
+                throw Exception(":( run_Gi_IntelliSenseEverywhere failed")
+
             val keyboard = Keyboard()
             createLibFristTimeAndOpen2textEditor(keyboard)
 
-            if (WinWaitActive("${this.timestamp}.ahk"))
-                println(":) Active = ${this.timestamp}.ahk")
-            else
-                println(":( NOT Active = ${this.timestamp}.ahk")
 //            keyboard.type("__")
 //            Thread.sleep(1_000)  // wait for 1 second
 //            keyboard.type("1")
@@ -248,11 +246,24 @@ class Keyboard {
             }
         }
 
+        private fun isReturnStringTrue(milliWaitMax: Int = 3000): Boolean {
+            var returnString = this.getWait_OutputFile_String(3000)
+            if (returnString != "true")
+                println(":( problem: returnString = " + returnString)
+            else
+                println(":) OK: returnString = " + returnString)
+            return (returnString == "true")
+        }
+
 
         private var timestamp: String? = null
 
-        fun openNotepad_NeverUsedBefore_a_totally_new() {
-            openNotepad()
+        fun openAndSave_Notepad_NeverUsedBefore_a_totally_new(): Boolean {
+            if (!closeAllOpenNotepad())
+                throw Exception(":( openNotepad failed")
+
+            if (!openNotepad())
+                throw Exception(":( openNotepad failed")
 
 //            var sleepMili = 100
             Thread.sleep(1500.toLong())
@@ -264,84 +275,165 @@ class Keyboard {
                     .withZone(ZoneOffset.UTC)
                     .format(Instant.now())
 
+
             var ahkCode = """
+                #SingleInstance,Force
                 SetTitleMatchMode,2
+                tooltip,WinWait (%A_LineFile%~%A_LineNumber%)
                 WinWait,ahk_class Notepad,,1
+
                 WinActivate,ahk_class Notepad
+                ; Msgbox,(%A_LineFile%~%A_LineNumber%)
+                tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
                 WinWaitActive,ahk_class Notepad,,1
-                Send,^s
+                ; Msgbox,(%A_LineFile%~%A_LineNumber%)
+                ControlSend,,hello world,ahk_class Notepad
+
+                sleep,100
+
+                ; Msgbox,(%A_LineFile%~%A_LineNumber%)
+                ; ControlSend,,{CtrlDown}s{CtrlUp},ahk_class Notepad
+                ifWinActive,ahk_class Notepad
+                    send,^s
+                tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
                 WinWaitActive, ahk_class #32770 ,,2
                 IfWinNotActive, ahk_class #32770
                 {
                     returnString := "false"
-                    FileAppend, % returnString, ${outputFile.absolutePath}
+                    FileAppend, % returnString, "${outputFile.absolutePath}"
                     ExitApp
                 }
-                ClipboardBackup := "$timestamp"
-                Clipboard := "$timestamp"
+                ClipboardBackup := "${timestamp}"
+                Clipboard := "${timestamp}"
+                sleep,200
                 Send,^v{enter}
+                tooltip,WinWaitNotActive (%A_LineFile%~%A_LineNumber%)
+
                 WinWaitNotActive, ahk_class #32770 ,,1
                 ClipboardBackup := Clipboard
+
                 tooltip,% "WinWaitActive (" A_LineNumber " " RegExReplace(A_LineFile,".*\\") ")"
                 WinWaitActive,$timestamp ahk_class Notepad,,1
                 tooltip,
                 returnString := ( WinExist("$timestamp ahk_class Notepad") ) ? "true" : "false"
-                FileAppend, % returnString, ${outputFile.absolutePath}
+                FileAppend, % returnString, "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
             Thread.sleep(1500.toLong())
 
+            return isReturnStringTrue()
+
+            if (WinWaitActive("${this.timestamp}.ahk"))
+                println(":) Active = ${this.timestamp}.ahk")
+            else
+                println(":( NOT Active = ${this.timestamp}.ahk")
+
+
         }
 
-        private fun WinWaitActive(s: String): Boolean {
+
+        private fun run_Gi_IntelliSenseEverywhere(): Boolean {
+            val path: String = """E:\fre\private\HtmlDevelop\AutoHotKey\global-IntelliSense-everywhere-Nightly-Build\start.ahk"""
+            val winTitle: String = """TypingAid.ahk"""
             var ahkCode = """
+                #SingleInstance,Force
+                run,"$path"
+            """.trimIndent()
+            doAhk(ahkCode)
+            return isWinActiveWait(winTitle = winTitle, secondsWait = 6)
+        }
+
+        private fun isWinActiveWait(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: String = "Off", secondsWait: Int = 2): Boolean {
+            return WinWaitActive(winTitle, detectHiddenWindowOnOff, secondsWait)
+        }
+
+        private fun WinWaitActive(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: String = "Off", secondsWait: Int = 2): Boolean {
+            var ahkCode = """
+                #SingleInstance,Force
                 SetTitleMatchMode,2
-                WinWaitActive,$s,,2
-                IfWinActive,$s
+                DetectHiddenWindows,$detectHiddenWindowOnOff
+                WinWaitActive,$winTitle,,2
+                IfWinActive,$winTitle
                     returnString := "true"
                 else
                     returnString := "false"
-                FileAppend, % returnString, ${outputFile.absolutePath}
+                FileAppend, % returnString, "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
-            var returnString = this.getWait_OutputFile_String()
-            return if (returnString == "true") true else false
-//            return (returnString == "true") ? true : false // <==== not working in kotlin
+            return isReturnStringTrue()
+//            var returnString = this.getWait_OutputFile_String()
+//            return if (returnString == "true") true else false
         }
 
 
-        fun openNotepad() {
+        private fun openNotepad(): Boolean {
             var ahkCode = """
+                #SingleInstance,Force
                 SetTitleMatchMode,2
-                WinClose,ahk_class Notepad
-                WinKill,ahk_class Notepad
-                WinWaitClose,,ahk_class Notepad,,2
-                If(WinExist("ahk_class #32770")){
-                    returnString := "false"
-                    FileAppend, % returnString, ${outputFile.absolutePath}
-                    ExitApp
-                }
                 run,notepad
+                tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
+                WinWait,ahk_class Notepad,,2
+                WinActivate,ahk_class Notepad
                 WinWaitActive,ahk_class Notepad,,2
                 returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
-                FileAppend, % returnString, ${outputFile.absolutePath}
+                FileAppend, % returnString, "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
+            return isReturnStringTrue()
+        }
+        private fun isWritingToOutputFilePossible(): Boolean {
+            var ahkCode = """
+                #SingleInstance,Force
+                FileAppend, % "true", "${outputFile.absolutePath}"
+                ExitApp
+            """.trimIndent()
+            doAhk(ahkCode)
+            return isReturnStringTrue()
+        }
+        private fun closeAllOpenNotepad(): Boolean {
+            var ahkCode = """
+                #SingleInstance,Force
+                SetTitleMatchMode,2
+                while(winexist("ahk_class Notepad")){
+                    WinClose,ahk_class Notepad
+                    tooltip,WinWait (%A_LineFile%~%A_LineNumber%)
+                    ; Editor ahk_class #32770 ; mouseWindowTitle=0x44a2386  ;
+                    WinActivate,Editor ahk_class #32770
+                    tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
+                    WinWaitActive,Editor ahk_class #32770,,1 ; would you save
+                    Send,n ; no
+                    tooltip,WinWaitClose (%A_LineFile%~%A_LineNumber%)
+                    WinWaitClose,,ahk_class Notepad,,2
+                }
+                If(WinExist("ahk_class #32770")){
+                    returnString := "false"
+                    FileAppend, % returnString, "${outputFile.absolutePath}"
+                    ExitApp
+                }
+                returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
+                FileAppend, % returnString, "${outputFile.absolutePath}"
+                ExitApp
+            """.trimIndent()
+            doAhk(ahkCode)
+            return isReturnStringTrue()
         }
 
-        fun getWait_OutputFile_String(): String {
-            var fileExists = outputFile.waitFileExist()
+        fun getWait_OutputFile_String(milliWaitMax: Int = 3000): String {
+            var fileExists = outputFile.waitFileExist(3000)
+            if (!fileExists)
+                throw Exception(":( ${outputFile.absolutePath} not exist.")
+
             var outputFileContent = outputFile?.readText()
             return outputFileContent
         }
 
-        private fun File.waitFileExist(): Boolean {
+        private fun File.waitFileExist(milliWaitMax: Int = 3000): Boolean {
             var i = 0
             var sleepMili = 40
-            while (!this.exists() && (++i * sleepMili) < 3000) Thread.sleep(sleepMili.toLong())
+            while (!this.exists() && (++i * sleepMili) < milliWaitMax) Thread.sleep(sleepMili.toLong())
             var fileExists = this.exists()
             if (!fileExists)
                 println(":-( ${this.absolutePath} does NOT exist. weited: ${i * sleepMili}")
@@ -350,22 +442,36 @@ class Keyboard {
             return fileExists
         }
 
+        fun test_indexed_multi_ahk(x: Any, y: Any): Unit {
+            openAndSave_Notepad_NeverUsedBefore_a_totally_new()
+//            todo: just started 22.10.2018 19:28
+            val ahk = """
+            colors and indexed each Color|rr||ahk|[
+                brown
+                orange
+            )
+            """.trimIndent()
+            doAhk(ahk)
+        }
+
         //            keyboard.type("~!@#$%^&*()_+")
         private fun createLibFristTimeAndOpen2textEditor(keyboard: Keyboard) {
-
             keyboard.type("__")
             Thread.sleep(1_000)  // wait for 1 second
             keyboard.type("1")
+//            isWinActiveWait() ; todo:
         }
 
         fun doAhk(ahkCode: String) {
             if (inputFile.exists())
                 inputFile.delete()
+            Thread.sleep(100.toLong())
             inputFile.writeText(ahkCode)
             inputFile.waitFileExist()
             if (outputFile.exists())
                 outputFile.delete()
-            val commandLine = "${ahkDir}${ahkName} ${inputFile.absolutePath} ${outputFile.absolutePath}"
+            Thread.sleep(100.toLong())
+            val commandLine = """"${ahkDir}${ahkName}" "${inputFile.absolutePath}" "${outputFile.absolutePath}""""
             val p = Runtime.getRuntime().exec("cmd /c " + commandLine)
             println(p.toString())
         }
