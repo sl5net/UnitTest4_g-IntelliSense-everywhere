@@ -1,3 +1,3 @@
 #SingleInstance,Force
-FileAppend, % "true", "c:\exec-ahk-commandLineParas.ahk.output.txt"
+FileAppend, % "true", % "G:\fre\git\github\UnitTest4_g-IntelliSense-everywhere\src\exec-ahk-commandLineParas.ahk.output.txt"
 ExitApp

@@ -198,7 +198,7 @@ class Keyboard {
 
     companion object {
 
-        private val ahkDir = ".\\src\\"
+        private val ahkDir = """src\"""
         private val ahkNameWithoutExtension = "exec-ahk-commandLineParas"
         private val ahkName = "${ahkNameWithoutExtension}.ahk"
         private val inputFileName = "${ahkName}.input.inc.ahk"
@@ -300,7 +300,7 @@ class Keyboard {
                 IfWinNotActive, ahk_class #32770
                 {
                     returnString := "false"
-                    FileAppend, % returnString, "${outputFile.absolutePath}"
+                    FileAppend, % returnString, % "${outputFile.absolutePath}"
                     ExitApp
                 }
                 ClipboardBackup := "${timestamp}"
@@ -316,7 +316,7 @@ class Keyboard {
                 WinWaitActive,$timestamp ahk_class Notepad,,1
                 tooltip,
                 returnString := ( WinExist("$timestamp ahk_class Notepad") ) ? "true" : "false"
-                FileAppend, % returnString, "${outputFile.absolutePath}"
+                FileAppend, % returnString, % "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
@@ -358,7 +358,7 @@ class Keyboard {
                     returnString := "true"
                 else
                     returnString := "false"
-                FileAppend, % returnString, "${outputFile.absolutePath}"
+                FileAppend, % returnString, % "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
@@ -378,7 +378,7 @@ class Keyboard {
                 WinActivate,ahk_class Notepad
                 WinWaitActive,ahk_class Notepad,,2
                 returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
-                FileAppend, % returnString, "${outputFile.absolutePath}"
+                FileAppend, % returnString, % "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
@@ -387,9 +387,10 @@ class Keyboard {
         private fun isWritingToOutputFilePossible(): Boolean {
             var ahkCode = """
                 #SingleInstance,Force
-                FileAppend, % "true", "${outputFile.absolutePath}"
+                FileAppend, % "true", % "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
+            val file = File("temp2.txt").writeText(ahkCode)
             doAhk(ahkCode)
             return isReturnStringTrue()
         }
@@ -410,11 +411,11 @@ class Keyboard {
                 }
                 If(WinExist("ahk_class #32770")){
                     returnString := "false"
-                    FileAppend, % returnString, "${outputFile.absolutePath}"
+                    FileAppend, % returnString, % "${outputFile.absolutePath}"
                     ExitApp
                 }
                 returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
-                FileAppend, % returnString, "${outputFile.absolutePath}"
+                FileAppend, % returnString, % "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
@@ -474,6 +475,7 @@ class Keyboard {
             val commandLine = """"${ahkDir}${ahkName}" "${inputFile.absolutePath}" "${outputFile.absolutePath}""""
             val p = Runtime.getRuntime().exec("cmd /c " + commandLine)
             println(p.toString())
+            Thread.sleep(100.toLong())
         }
     }
 }
