@@ -1,3 +1,4 @@
+import Keyboard.Companion.openAndSave_Notepad_NeverUsedBefore_a_totally_new
 import java.awt.*
 import java.awt.event.KeyEvent
 import java.io.File
@@ -191,6 +192,7 @@ class Keyboard {
     companion object {
 
         private val ahkDirRel = """src\"""
+        private val projectRootAbs = File("").absolutePath
         private val ahkDirAbs = File(ahkDirRel).absolutePath
         private val ahkNameWithoutExtension = "exec-ahk-commandLineParas"
         private val ahkName = "${ahkNameWithoutExtension}.ahk"
@@ -198,7 +200,7 @@ class Keyboard {
         private val ahkFile = File("""${ahkDirAbs}\${ahkName}""")
         private val inputFile = File("""${ahkDirAbs}\${inputFileName}""")
         private val outputFileName = "${ahkName}.output.txt"
-//        private val outputFile = File("$ahkDirRel$outputFileName") // <== problem it will not generated 24.10.2018 19:54
+        //        private val outputFile = File("$ahkDirRel$outputFileName") // <== problem it will not generated 24.10.2018 19:54
         private val outputFile = File("""$ahkDirAbs\$outputFileName""")
 //        private val outputFile = File("""c:$outputFileName""")
 
@@ -209,9 +211,11 @@ class Keyboard {
             if (!isWritingToOutputFilePossible()) {
                 throw Exception(":( isWritingToOutputFilePossible failed")
             }
-//            openNotepad()
-            if (!openAndSave_Notepad_NeverUsedBefore_a_totally_new())
-                throw Exception(":( openAndSave_Notepad_NeverUsedBefore_a_totally_new failed")
+//            if (!openAndSave_Notepad_NeverUsedBefore_a_totally_new())
+//                throw Exception(":( openAndSave_Notepad_NeverUsedBefore_a_totally_new failed")
+
+            if (!openNotepad())
+                throw Exception(":( openNotepad failed")
 
             Thread.sleep(5500.toLong())
 
@@ -242,11 +246,13 @@ class Keyboard {
         }
 
         private fun isReturnStringTrue(milliWaitMax: Int = 3000): Boolean {
+            val funName = object{}.javaClass.enclosingMethod.name
+            println("/¯¯¯¯ $funName(milliWaitMax:$milliWaitMax)")
             val returnString = this.getWait_OutputFile_String(milliWaitMax)
             if (returnString != "true")
-                println(":( problem: returnString = " + returnString)
+                println(":( $returnString            = returnString" )
             else
-                println(":) OK: returnString = " + returnString)
+                println(":) $returnString            = returnString" )
             return (returnString == "true")
         }
 
@@ -329,6 +335,8 @@ class Keyboard {
 
 
         private fun run_Gi_IntelliSenseEverywhere(): Boolean {
+            val funName = object{}.javaClass.enclosingMethod.name
+            println("/¯¯¯¯ $funName")
             val path: String = """E:\fre\private\HtmlDevelop\AutoHotKey\global-IntelliSense-everywhere-Nightly-Build\start.ahk"""
             val winTitle: String = """TypingAid.ahk"""
             val ahkCode = """
@@ -336,8 +344,37 @@ class Keyboard {
                 run,"$path"
             """.trimIndent()
             doAhk(ahkCode)
-            return isWinActiveWait(winTitle = winTitle, secondsWait = 6)
+            return isWinExistWait(winTitle = winTitle, secondsWait = 9, detectHiddenWindowOnOff = "On")
         }
+
+        private fun isWinExistWait(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: Boolean = false, secondsWait: Int = 2): Boolean {
+            return isWinExistWait(
+                    winTitle,
+                    (if (detectHiddenWindowOnOff) "On" else "Off"),
+                    secondsWait)
+        }
+
+        private fun isWinExistWait(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: String = "Off", secondsWait: Int = 2): Boolean {
+            val funName = object{}.javaClass.enclosingMethod.name
+            println("/¯¯¯¯ $funName( ... secondsWait: $secondsWait")
+            var detectHiddenWindowOnOff2 = detectHiddenWindowOnOff
+            when (detectHiddenWindowOnOff) {
+                "true" -> detectHiddenWindowOnOff2 = "On"
+                "false" -> detectHiddenWindowOnOff2 = "Off"
+            }
+            val ahkCode = """
+                #SingleInstance,Force
+                SetTitleMatchMode,2
+                DetectHiddenWindows,$detectHiddenWindowOnOff2
+                WinWaitActive,$winTitle,,$secondsWait
+                returnString := ( WinExist("$winTitle") ) ? "true" : "false"
+                FileAppend, % returnString, % "${outputFile.absolutePath}"
+                ExitApp
+            """.trimIndent()
+            doAhk(ahkCode)
+            return isReturnStringTrue(milliWaitMax = secondsWait*1000)
+        }
+
 
         private fun isWinActiveWait(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: String = "Off", secondsWait: Int = 2): Boolean {
             return WinWaitActive(winTitle, detectHiddenWindowOnOff, secondsWait)
@@ -369,16 +406,17 @@ class Keyboard {
                 SetTitleMatchMode,2
                 run,notepad
                 tooltip,WinWaitActive (%A_LineFile%~%A_LineNumber%)
-                WinWait,ahk_class Notepad,,2
+                WinWait,ahk_class Notepad , , 1 , Notepad++
                 WinActivate,ahk_class Notepad
-                WinWaitActive,ahk_class Notepad,,2
-                returnString := ( WinExist("ahk_class Notepad") ) ? "true" : "false"
+                WinWaitActive,ahk_class Notepad, , 1 , Notepad++
+                returnString := ( WinExist("ahk_class Notepad", "" , "Notepad++") ) ? "true" : "false"
                 FileAppend, % returnString, % "${outputFile.absolutePath}"
                 ExitApp
             """.trimIndent()
             doAhk(ahkCode)
             return isReturnStringTrue()
         }
+
         private fun isWritingToOutputFilePossible(): Boolean {
             val ahkCode = """
                 #SingleInstance,Force
@@ -393,6 +431,7 @@ class Keyboard {
             doAhk(ahkCode)
             return isReturnStringTrue()
         }
+
         private fun closeAllOpenNotepad(): Boolean {
             var temp = """
                 #SingleInstance,Force
@@ -477,7 +516,9 @@ returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" 
         }
 
         fun getWait_OutputFile_String(milliWaitMax: Int = 3000): String {
-            val fileExists = outputFile.waitFileExist(3000)
+            val funName = object{}.javaClass.enclosingMethod.name
+            println("/¯¯¯¯ $funName(milliWaitMax:$milliWaitMax")
+            val fileExists = outputFile.waitFileExist(milliWaitMax)
             if (!fileExists)
                 throw Exception(":( ${outputFile.absolutePath} not exist.")
 
@@ -486,14 +527,17 @@ returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" 
         }
 
         private fun File.waitFileExist(milliWaitMax: Int = 3000): Boolean {
+            val funName = object{}.javaClass.enclosingMethod.name
+            println("/¯¯¯¯ $funName(milliWaitMax: $milliWaitMax)")
             var i = 0
             val sleepMili = 40
             while (!this.exists() && (++i * sleepMili) < milliWaitMax) Thread.sleep(sleepMili.toLong())
             val fileExists = this.exists()
+//            println(projectRootAbs)
             if (!fileExists)
-                println(":-( ${this.absolutePath} does NOT exist. weited: ${i * sleepMili}")
+                println(":-( ${this.absolutePath.replace(projectRootAbs,"")}         NOT exist. waited: ${i * sleepMili} = $i*$sleepMili")
             else
-                println(":-) ${this.absolutePath} does exist.")
+                println(":-) ${this.absolutePath.replace(projectRootAbs,"")}             exist.")
             return fileExists
         }
 
@@ -518,6 +562,8 @@ returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" 
         }
 
         fun doAhk(ahkCode: String) {
+            val funName = object{}.javaClass.enclosingMethod.name
+            println("/¯¯¯¯ $funName(...)")
             if (inputFile.exists())
                 inputFile.delete()
             Thread.sleep(100.toLong())
@@ -526,13 +572,8 @@ returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" 
             if (outputFile.exists())
                 outputFile.delete()
             Thread.sleep(100.toLong())
-//            val commandLine = """"${ahkDirAbs}${ahkName}" "${inputFile.absolutePath}" "${outputFile.absolutePath}""""
             val commandLine = """${ahkFile.absolutePath} ${inputFile.absolutePath} ${outputFile.absolutePath}"""
-//            println()
-//            println(commandLine)
-//            println()
             val p = Runtime.getRuntime().exec("cmd /c " + commandLine)
-            println(p.toString())
             File("${ahkDirRel}fun_doAhk_last_temp.ahk").writeText(ahkCode) // <=== only for testing 24.10.2018 21:44
             Thread.sleep(100.toLong())
         }
