@@ -25,6 +25,8 @@ inputFilePath = %1%
 outputFilePath = %2%
 run,% inputFilePath
 
+ExitApp
+
 ; text := "rübennase " A_Now "`n"
 ; FileAppend, % text, % outputFilePath
 ;MsgBox,% para1 " " msg "(" A_LineNumber " " RegExReplace(A_LineFile,".*\\") ")"

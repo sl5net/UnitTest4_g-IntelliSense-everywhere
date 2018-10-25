@@ -214,13 +214,15 @@ class Keyboard {
 //            if (!openAndSave_Notepad_NeverUsedBefore_a_totally_new())
 //                throw Exception(":( openAndSave_Notepad_NeverUsedBefore_a_totally_new failed")
 
-            if (!openNotepad())
-                throw Exception(":( openNotepad failed")
+//            if (!openNotepad())
+//                throw Exception(":( openNotepad failed")
 
-            Thread.sleep(5500.toLong())
+//            Thread.sleep(5500.toLong())
 
             if (!run_Gi_IntelliSenseEverywhere())
                 throw Exception(":( run_Gi_IntelliSenseEverywhere failed")
+
+            return
 
             val keyboard = Keyboard()
             createLibFristTimeAndOpen2textEditor(keyboard)
@@ -338,13 +340,16 @@ class Keyboard {
             val funName = object{}.javaClass.enclosingMethod.name
             println("/¯¯¯¯ $funName")
             val path: String = """E:\fre\private\HtmlDevelop\AutoHotKey\global-IntelliSense-everywhere-Nightly-Build\start.ahk"""
-            val winTitle: String = """TypingAid.ahk"""
+            val winTitle: String = """TypingAid""" // isWinExistWait works not (works outside kotlin (src\temp_isWinExistWait.ahk) or in debugging mode
+//            val winTitle: String = """TypingAid.ahk""" // works not
+//            val winTitle: String = """TypingAid - """ // works not
             val ahkCode = """
                 #SingleInstance,Force
                 run,"$path"
             """.trimIndent()
             doAhk(ahkCode)
-            return isWinExistWait(winTitle = winTitle, secondsWait = 9, detectHiddenWindowOnOff = "On")
+            File("""src\temp_$funName.ahk""" ).writeText(ahkCode)
+            return isWinExistWait(winTitle = winTitle, secondsWait = 15, detectHiddenWindowOnOff = "On")
         }
 
         private fun isWinExistWait(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: Boolean = false, secondsWait: Int = 2): Boolean {
@@ -356,21 +361,24 @@ class Keyboard {
 
         private fun isWinExistWait(winTitle: String = """TypingAid.ahk""", detectHiddenWindowOnOff: String = "Off", secondsWait: Int = 2): Boolean {
             val funName = object{}.javaClass.enclosingMethod.name
-            println("/¯¯¯¯ $funName( ... secondsWait: $secondsWait")
             var detectHiddenWindowOnOff2 = detectHiddenWindowOnOff
             when (detectHiddenWindowOnOff) {
                 "true" -> detectHiddenWindowOnOff2 = "On"
                 "false" -> detectHiddenWindowOnOff2 = "Off"
             }
+            println("/¯¯¯¯ $funName( ... secondsWait: $secondsWait, detectHiddenWindowOnOff: $detectHiddenWindowOnOff~$detectHiddenWindowOnOff2")
             val ahkCode = """
                 #SingleInstance,Force
                 SetTitleMatchMode,2
                 DetectHiddenWindows,$detectHiddenWindowOnOff2
-                WinWaitActive,$winTitle,,$secondsWait
+                WinWait,$winTitle,,$secondsWait
                 returnString := ( WinExist("$winTitle") ) ? "true" : "false"
                 FileAppend, % returnString, % "${outputFile.absolutePath}"
+                MsgBox,262209,returnString=%returnString%,returnString=%returnString%,5
                 ExitApp
             """.trimIndent()
+            File("""src\temp_$funName.ahk""" ).writeText(ahkCode)
+
             doAhk(ahkCode)
             return isReturnStringTrue(milliWaitMax = secondsWait*1000)
         }
@@ -526,20 +534,19 @@ returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" 
             return outputFileContent
         }
 
-        private fun File.waitFileExist(milliWaitMax: Int = 3000): Boolean {
-            val funName = object{}.javaClass.enclosingMethod.name
-            println("/¯¯¯¯ $funName(milliWaitMax: $milliWaitMax)")
-            var i = 0
-            val sleepMili = 40
-            while (!this.exists() && (++i * sleepMili) < milliWaitMax) Thread.sleep(sleepMili.toLong())
-            val fileExists = this.exists()
-//            println(projectRootAbs)
-            if (!fileExists)
-                println(":-( ${this.absolutePath.replace(projectRootAbs,"")}         NOT exist. waited: ${i * sleepMili} = $i*$sleepMili")
-            else
-                println(":-) ${this.absolutePath.replace(projectRootAbs,"")}             exist.")
-            return fileExists
-        }
+private fun File.waitFileExist(milliWaitMax: Int = 3000): Boolean {
+    val funName = object{}.javaClass.enclosingMethod.name
+    println("/¯¯¯¯ $funName(milliWaitMax: $milliWaitMax)")
+    var i = 0
+    val sleepMili = 40
+    while (!this.exists() && (++i * sleepMili) < milliWaitMax) Thread.sleep(sleepMili.toLong())
+    val fileExists = this.exists()
+    if (!fileExists)
+        println(":-( ${this.absolutePath.replace(projectRootAbs,"")}         NOT exist. waited: ${i * sleepMili} = $i*$sleepMili")
+    else
+        println(":-) ${this.absolutePath.replace(projectRootAbs,"")}             exist.")
+    return fileExists
+}
 
         fun test_indexed_multi_ahk(x: Any, y: Any): Unit {
             openAndSave_Notepad_NeverUsedBefore_a_totally_new()
@@ -572,8 +579,14 @@ returnString := ( WinExist("ahk_class Notepad" , "" , "Notepad++") ) ?  "false" 
             if (outputFile.exists())
                 outputFile.delete()
             Thread.sleep(100.toLong())
-            val commandLine = """${ahkFile.absolutePath} ${inputFile.absolutePath} ${outputFile.absolutePath}"""
-            val p = Runtime.getRuntime().exec("cmd /c " + commandLine)
+
+//            kill exec-ahk-commandLineParas.ahk ahk_class AutoHotkey ... may its eventuelly disturbing
+            var commandLine = """${ahkDirAbs}\kill-running-exec-ahk-commandLineParas.ahk"""
+            var p = Runtime.getRuntime().exec("cmd /c " + commandLine)
+            Thread.sleep(100.toLong())
+
+             commandLine = """${ahkFile.absolutePath} ${inputFile.absolutePath} ${outputFile.absolutePath}"""
+             p = Runtime.getRuntime().exec("cmd /c " + commandLine)
             File("${ahkDirRel}fun_doAhk_last_temp.ahk").writeText(ahkCode) // <=== only for testing 24.10.2018 21:44
             Thread.sleep(100.toLong())
         }
